@@ -54,6 +54,7 @@ export default class App extends Component {
         <MapGL
             {... this.state.viewport}
             mapStyle={this.state.style}
+            mapboxApiAccessToken={MAPBOX_TOKEN}
         >
         </MapGL>
       </div>
