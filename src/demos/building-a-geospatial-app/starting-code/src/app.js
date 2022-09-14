@@ -50,6 +50,13 @@ export default class App extends Component {
   onStyleChange = (style) => {
     this.setState({style});
   }
+
+  _onViewportChange(viewport) {
+    this.setState({
+      viewport: {...this.state.viewport, ...viewport}
+    });
+  }
+
   }
 
   render() {
@@ -60,6 +67,7 @@ export default class App extends Component {
             {... this.state.viewport}
             mapStyle={this.state.style}
             mapboxApiAccessToken={MAPBOX_TOKEN}
+            onViewportChange={viewport => this._onViewportChange(viewport)}
         >
         </MapGL>
       </div>
