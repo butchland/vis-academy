@@ -33,6 +33,18 @@ function SetToken() {
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+        style: MAPBOX_STYLE,
+        viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            longitude: -74,
+            latitude: 40.7,
+            zoom: 11,
+            maxZoom: 16
+        }
+
+    };
   }
 
   render() {
