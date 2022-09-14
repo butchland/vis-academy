@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MapGL from 'react-map-gl';
-
+import {MapStylePicker} from './controls';
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/light-v9';
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
 
@@ -47,10 +47,15 @@ export default class App extends Component {
 
     };
   }
+  onStyleChange = (style) => {
+    this.setState({style});
+  }
+  }
 
   render() {
     return (
       <div>
+        <MapStylePicker onStyleChange={this.onStyleChange} currentStyle={this.state.style}/>
         <MapGL
             {... this.state.viewport}
             mapStyle={this.state.style}
