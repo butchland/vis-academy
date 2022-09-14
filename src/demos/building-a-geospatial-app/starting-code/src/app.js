@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MapGL from 'react-map-gl';
 
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/light-v9';
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
@@ -50,13 +51,11 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <div className="intro">
-          {MAPBOX_TOKEN ? (
-            `You mapbox token is set. You're good to go!`
-          ) : (
-            <SetToken />
-          )}
-        </div>
+        <MapGL
+            {... this.state.viewport}
+            mapStyle={this.state.style}
+        >
+        </MapGL>
       </div>
     );
   }
