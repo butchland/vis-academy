@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import MapGL from 'react-map-gl';
 import { StaticMap } from 'react-map-gl';
-// import { MapStylePicker } from './controls';
+import { MapStylePicker } from './controls';
 import DeckGL from 'deck.gl';
 
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v9';
@@ -18,6 +18,9 @@ const INITIAL_VIEW_STATE = {
 }
 
 export default class App extends Component {
+  state = {
+    style: MAPBOX_STYLE
+  };
   // constructor(props) {
   //   super(props);
   //   this.state = {
@@ -33,9 +36,9 @@ export default class App extends Component {
 
   //   };
   // }
-  // onStyleChange = (style) => {
-  //   this.setState({ style });
-  // }
+  onStyleChange = (style) => {
+    this.setState({ style });
+  }
 
   // _onViewportChange(viewport) {
   //   this.setState({
@@ -63,7 +66,8 @@ export default class App extends Component {
     return (
       <div>
         <DeckGL initialViewState={INITIAL_VIEW_STATE} controller>
-          <StaticMap />
+          <MapStylePicker onStyleChange={this.onStyleChange} currentStyle={this.state.style} />
+          <StaticMap mapStyle={this.state.style} mapboxApiAccessToken={MAPBOX_TOKEN}/>
         </DeckGL>
         {/* <MapStylePicker onStyleChange={this.onStyleChange} currentStyle={this.state.style} />
         <MapGL
