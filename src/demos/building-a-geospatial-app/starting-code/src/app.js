@@ -8,6 +8,7 @@ import {
 import DeckGL from 'deck.gl';
 import taxiData from '../../../data/taxi';
 import { renderLayers } from './deckgl-layers';
+import { tooltipStyle } from './style';
 
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v9';
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
@@ -24,6 +25,11 @@ const INITIAL_VIEW_STATE = {
 
 export default class App extends Component {
   state = {
+    hover: {
+      x: 0,
+      y: 0,
+      hoveredObject: null
+    },
     points: [],
     settings: Object.keys(SCATTERPLOT_CONTROLS).reduce(
       (accu, key) => ({
@@ -67,12 +73,33 @@ export default class App extends Component {
     this.setState({ settings });
   }
 
+  _onHover({ x, y, object }) {
+    const label = object ? (object.pickup ? 'Pickup' : 'Dropoff') : null;
+
+    this.setState({ hover: { x, y, hoveredObject: object, label } });
+  }
   render() {
+    const data = this.state.points;
+    if (!data.length) {
+      return null;
+    }
+    const { hover, settings } = this.state;
     return (
       <div>
+        {hover.hoveredObject && (
+          <div
+            style={{
+              ...tooltipStyle,
+              transform: `translate(${hover.x}px, ${hover.y}px)`
+            }}
+          >
+            <div>{hover.label}</div>
+          </div>
+        )}
         <DeckGL
-          layers={renderLayers({ 
+          layers={renderLayers({
             data: this.state.points,
+            onHover: hover => this._onHover(hover),
             settings: this.state.settings
           })}
           initialViewState={INITIAL_VIEW_STATE}
@@ -82,11 +109,11 @@ export default class App extends Component {
             onStyleChange={this.onStyleChange}
             currentStyle={this.state.style}
           />
-        <LayerControls
-          settings={this.state.settings}
-          propTypes={SCATTERPLOT_CONTROLS}
-          onChange={settings => this._updateLayerSettings(settings)}
-        />
+          <LayerControls
+            settings={this.state.settings}
+            propTypes={SCATTERPLOT_CONTROLS}
+            onChange={settings => this._updateLayerSettings(settings)}
+          />
           <StaticMap
             mapStyle={this.state.style}
             mapboxApiAccessToken={MAPBOX_TOKEN}
