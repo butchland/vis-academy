@@ -4,8 +4,8 @@ import { StaticMap } from 'react-map-gl';
 // import { MapStylePicker } from './controls';
 import DeckGL from 'deck.gl';
 
-// const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v9';
-// const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v9';
+const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
 
 const INITIAL_VIEW_STATE = {
   longitude: -74,
