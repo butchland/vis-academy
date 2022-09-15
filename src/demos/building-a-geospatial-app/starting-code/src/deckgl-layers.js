@@ -12,11 +12,11 @@ export function renderLayers(props) {
       id: 'scatterplot',
       getPosition: d => d.position,
       getColor: d => d.pickup? PICKUP_COLOR: DROPOFF_COLOR,
-      getRadius: d => 5,
+      getRadius: d => 3,
       opacity: 0.5,
       pickable: true,
       points: [], 
-      radiusMinPixels: 0.25,
+      radiusMinPixels: 0.125,
       radiusMaxPixels: 30,
       data,
       ...settings
