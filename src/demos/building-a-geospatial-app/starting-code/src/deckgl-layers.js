@@ -11,7 +11,7 @@ export function renderLayers(props) {
       points: [],
       id: 'scatterplot',
       getPosition: d => d.position,
-      getColor: d => [0, 128, 255],
+      getColor: d => d.pickup? PICKUP_COLOR: DROPOFF_COLOR,
       getRadius: d => 5,
       opacity: 0.5,
       pickable: true,
