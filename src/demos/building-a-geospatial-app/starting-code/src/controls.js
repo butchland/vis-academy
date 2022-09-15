@@ -50,8 +50,8 @@ export const SCATTERPLOT_CONTROLS = {
     min: 10,
     max: 200
   },
-  showHexagon: {
-    displayName: 'Show Hexagon',
+  showScatterplot: {
+    displayName: 'Show Scatterplot',
     type: 'boolean',
     value: true
   }
