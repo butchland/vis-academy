@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { StaticMap } from 'react-map-gl';
-import { MapStylePicker } from './controls';
+import {
+  LayerControls,
+  MapStylePicker,
+  SCATTERPLOT_CONTROLS
+} from './controls';
 import DeckGL from 'deck.gl';
 import taxiData from '../../../data/taxi';
 import { renderLayers } from './deckgl-layers';
@@ -21,9 +25,16 @@ const INITIAL_VIEW_STATE = {
 export default class App extends Component {
   state = {
     points: [],
+    settings: Object.keys(SCATTERPLOT_CONTROLS).reduce(
+      (accu, key) => ({
+        ...accu,
+        [key]: SCATTERPLOT_CONTROLS[key].value
+      }),
+      {}
+    ),
     style: MAPBOX_STYLE
   };
-  
+
   onStyleChange = (style) => {
     this.setState({ style });
   }
@@ -52,21 +63,24 @@ export default class App extends Component {
     });
   }
 
+  _updateLayerSettings(settings) {
+    this.setState({ settings });
+  }
 
   render() {
     return (
       <div>
         <DeckGL
           layers={renderLayers({ data: this.state.points })}
-          initialViewState={INITIAL_VIEW_STATE} 
+          initialViewState={INITIAL_VIEW_STATE}
           controller
         >
-          <MapStylePicker 
-            onStyleChange={this.onStyleChange} 
-            currentStyle={this.state.style} 
+          <MapStylePicker
+            onStyleChange={this.onStyleChange}
+            currentStyle={this.state.style}
           />
-          <StaticMap 
-            mapStyle={this.state.style} 
+          <StaticMap
+            mapStyle={this.state.style}
             mapboxApiAccessToken={MAPBOX_TOKEN}
           />
         </DeckGL>
