@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import MapGL from 'react-map-gl';
 import { StaticMap } from 'react-map-gl';
 import { MapStylePicker } from './controls';
 import DeckGL from 'deck.gl';
@@ -21,62 +20,24 @@ export default class App extends Component {
   state = {
     style: MAPBOX_STYLE
   };
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     style: MAPBOX_STYLE,
-  //     viewport: {
-  //       width: window.innerWidth,
-  //       height: window.innerHeight,
-  //       longitude: -74,
-  //       latitude: 40.7,
-  //       zoom: 11,
-  //       maxZoom: 22
-  //     }
-
-  //   };
-  // }
+  
   onStyleChange = (style) => {
     this.setState({ style });
   }
-
-  // _onViewportChange(viewport) {
-  //   this.setState({
-  //     viewport: { ...this.state.viewport, ...viewport }
-  //   });
-  // }
-
-  // componentDidMount() {
-  //   window.addEventListener('resize', this._resize);
-  //   this._resize();
-  // }
-
-  // componentWillUnmount() {
-  //   window.removeEventListener('resize', this._resize);
-  // }
-
-  // _resize = () => {
-  //   this._onViewportChange({
-  //     width: window.innerWidth,
-  //     height: window.innerHeight
-  //   });
-  // }
-
+ 
   render() {
     return (
       <div>
         <DeckGL initialViewState={INITIAL_VIEW_STATE} controller>
-          <MapStylePicker onStyleChange={this.onStyleChange} currentStyle={this.state.style} />
-          <StaticMap mapStyle={this.state.style} mapboxApiAccessToken={MAPBOX_TOKEN}/>
+          <MapStylePicker 
+            onStyleChange={this.onStyleChange} 
+            currentStyle={this.state.style} 
+          />
+          <StaticMap 
+            mapStyle={this.state.style} 
+            mapboxApiAccessToken={MAPBOX_TOKEN}
+          />
         </DeckGL>
-        {/* <MapStylePicker onStyleChange={this.onStyleChange} currentStyle={this.state.style} />
-        <MapGL
-          {... this.state.viewport}
-          mapStyle={this.state.style}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
-          onViewportChange={viewport => this._onViewportChange(viewport)}
-        >
-        </MapGL> */}
       </div>
     );
   }
