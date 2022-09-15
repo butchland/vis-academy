@@ -71,7 +71,10 @@ export default class App extends Component {
     return (
       <div>
         <DeckGL
-          layers={renderLayers({ data: this.state.points })}
+          layers={renderLayers({ 
+            data: this.state.points,
+            settings: this.state.settings
+          })}
           initialViewState={INITIAL_VIEW_STATE}
           controller
         >
@@ -79,6 +82,11 @@ export default class App extends Component {
             onStyleChange={this.onStyleChange}
             currentStyle={this.state.style}
           />
+        <LayerControls
+          settings={this.state.settings}
+          propTypes={SCATTERPLOT_CONTROLS}
+          onChange={settings => this._updateLayerSettings(settings)}
+        />
           <StaticMap
             mapStyle={this.state.style}
             mapboxApiAccessToken={MAPBOX_TOKEN}

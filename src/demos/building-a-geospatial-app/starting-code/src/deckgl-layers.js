@@ -5,9 +5,9 @@ const PICKUP_COLOR = [114, 19, 108];
 const DROPOFF_COLOR = [243, 185, 72];
 
 export function renderLayers(props) {
-  const { data } = props;
+  const { data, settings } = props;
   return [
-    new ScatterplotLayer({
+    settings.showScatterplot && new ScatterplotLayer({
       points: [],
       id: 'scatterplot',
       getPosition: d => d.position,
@@ -18,7 +18,8 @@ export function renderLayers(props) {
       points: [], 
       radiusMinPixels: 0.25,
       radiusMaxPixels: 30,
-      data
+      data,
+      ...settings
     })
   ];
 }
