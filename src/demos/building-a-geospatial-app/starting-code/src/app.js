@@ -30,7 +30,6 @@ export default class App extends Component {
 
   componentDidMount() {
     this._processData();
-    // ...
   }
 
   _processData() {
@@ -58,7 +57,7 @@ export default class App extends Component {
     return (
       <div>
         <DeckGL
-          layers={renderLayers({data: this.state.points})} 
+          layers={renderLayers({ data: this.state.points })}
           initialViewState={INITIAL_VIEW_STATE} 
           controller
         >
