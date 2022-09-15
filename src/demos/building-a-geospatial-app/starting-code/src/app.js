@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import MapGL from 'react-map-gl';
-import {MapStylePicker} from './controls';
+import { MapStylePicker } from './controls';
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/light-v9';
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
 
 function SetToken() {
   return (
-    <div style={{fontSize: '20px'}}>
+    <div style={{ fontSize: '20px' }}>
       <div>You don't have a Mapbox token set in your environemnt.</div>
       <ul>
         <li>
@@ -35,25 +35,25 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        style: MAPBOX_STYLE,
-        viewport: {
-            width: window.innerWidth,
-            height: window.innerHeight,
-            longitude: -74,
-            latitude: 40.7,
-            zoom: 11,
-            maxZoom: 22
-        }
+      style: MAPBOX_STYLE,
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        longitude: -74,
+        latitude: 40.7,
+        zoom: 11,
+        maxZoom: 22
+      }
 
     };
   }
   onStyleChange = (style) => {
-    this.setState({style});
+    this.setState({ style });
   }
 
   _onViewportChange(viewport) {
     this.setState({
-      viewport: {...this.state.viewport, ...viewport}
+      viewport: { ...this.state.viewport, ...viewport }
     });
   }
 
@@ -72,16 +72,16 @@ export default class App extends Component {
       height: window.innerHeight
     });
   }
-  
+
   render() {
     return (
       <div>
-        <MapStylePicker onStyleChange={this.onStyleChange} currentStyle={this.state.style}/>
+        <MapStylePicker onStyleChange={this.onStyleChange} currentStyle={this.state.style} />
         <MapGL
-            {... this.state.viewport}
-            mapStyle={this.state.style}
-            mapboxApiAccessToken={MAPBOX_TOKEN}
-            onViewportChange={viewport => this._onViewportChange(viewport)}
+          {... this.state.viewport}
+          mapStyle={this.state.style}
+          mapboxApiAccessToken={MAPBOX_TOKEN}
+          onViewportChange={viewport => this._onViewportChange(viewport)}
         >
         </MapGL>
       </div>
