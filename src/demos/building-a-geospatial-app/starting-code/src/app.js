@@ -49,6 +49,11 @@ export default class App extends Component {
     this._processData();
   }
 
+  _onWebGLInitialize = gl => {
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LEQUAL);
+  };
+
   _processData() {
     const points = taxiData.reduce((accu, curr, i) => {
      
