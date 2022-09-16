@@ -9,6 +9,6 @@ tasks:
 
     command: |
       cd /workspace/vis-academy/src/demos/building-a-geospatial-app/starting-code
-      yarn run start
+      yarn start
 
 
