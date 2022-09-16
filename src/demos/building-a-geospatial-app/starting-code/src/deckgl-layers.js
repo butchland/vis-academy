@@ -52,10 +52,9 @@ export function renderLayers(props) {
         extruded: true,
         getPosition: d => d.position,
         lightSettings: LIGHT_SETTINGS,
-        opacity: 0.8,
+        opacity: 0.4,
         pickable: true,
         data,
-        onHover,
         ...settings
       })
   ];
