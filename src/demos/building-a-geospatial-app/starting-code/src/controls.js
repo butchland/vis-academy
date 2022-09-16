@@ -7,6 +7,12 @@ export const HEXAGON_CONTROLS = {
     type: 'boolean',
     value: true
   },
+  showScatterplot: {
+    displayName: 'Show Scatterplot',
+    type: 'boolean',
+    value: true
+  },
+
   radius: {
     displayName: 'Hexagon Radius',
     type: 'range',
@@ -31,6 +37,7 @@ export const HEXAGON_CONTROLS = {
     min: 80,
     max: 100
   },
+  
   radiusScale: {
     displayName: 'Scatterplot Radius',
     type: 'range',
