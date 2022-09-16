@@ -50,9 +50,17 @@ export default class App extends Component {
   }
 
   _processData() {
-    const points = taxiData.reduce((accu, curr) => {
+    const points = taxiData.reduce((accu, curr, i) => {
+     
       accu.push({
         position: [Number(curr.pickup_longitude), Number(curr.pickup_latitude)],
+        trip_id: i,
+        event_datetime: curr.pickup_datetime,
+        passenger_count: curr.passenger_count,
+        trip_distance: curr.trip_distance,
+        fare_amount: curr.fare_amount,
+        tip_amount: curr.tip_amount,
+        total_amount: curr.total_amount,
         pickup: true
       });
       accu.push({
@@ -60,6 +68,13 @@ export default class App extends Component {
           Number(curr.dropoff_longitude),
           Number(curr.dropoff_latitude)
         ],
+        trip_id: i,
+        event_datetime: curr.dropoff_datetime,
+        passenger_count: curr.passenger_count,
+        trip_distance: curr.trip_distance,
+        fare_amount: curr.fare_amount,
+        tip_amount: curr.tip_amount,
+        total_amount: curr.total_amount,
         pickup: false
       });
       return accu;
@@ -93,7 +108,10 @@ export default class App extends Component {
               transform: `translate(${hover.x}px, ${hover.y}px)`
             }}
           >
-            <div>{hover.label}</div>
+            <div>{hover.label} {hover.hoveredObject.trip_id} </div>
+            <div>{hover.hoveredObject.event_datetime} pass: {hover.hoveredObject.passenger_count} </div>
+            <div>dist: {hover.hoveredObject.trip_id} fare: {hover.hoveredObject.fare_amount}</div>
+            <div>tip: {hover.hoveredObject.tip_amount} tot: {hover.hoveredObject.total_amount} </div>
           </div>
         )}
         <DeckGL
