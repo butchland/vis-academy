@@ -19,7 +19,7 @@ const INITIAL_VIEW_STATE = {
   zoom: 11,
   minZoom: 5,
   maxZoom: 22,
-  pitch: 0,
+  pitch: 30,
   bearing: 0
 }
 
