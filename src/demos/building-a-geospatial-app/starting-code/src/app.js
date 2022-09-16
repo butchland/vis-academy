@@ -104,9 +104,11 @@ export default class App extends Component {
     this.setState({ hover: { x, y, hoveredObject: object, label } });
   }
   _onHexHover({ x, y, object }) {
-    const points = object.points;
-    const trips = points.length;
-    this.setState({ hexhover: { x, y, hoveredObject: object, trips} });
+    if (object) {
+      const points = object.points;
+      const trips = points.length;
+      this.setState({ hexhover: { x, y, hoveredObject: object, trips} });
+    }
   }
   render() {
     const data = this.state.points;
