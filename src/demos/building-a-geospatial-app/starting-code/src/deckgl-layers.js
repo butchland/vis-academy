@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScatterplotLayer } from 'deck.gl';
+import { ScatterplotLayer, HexagonLayer } from 'deck.gl';
 
 const PICKUP_COLOR = [114, 19, 108];
 const DROPOFF_COLOR = [243, 185, 72];
@@ -42,6 +42,21 @@ export function renderLayers(props) {
       data,
       onHover,
       ...settings
-    })
+    }),
+    settings.showHexagon &&
+      new HexagonLayer({
+        id: 'heatmap',
+        colorRange: HEATMAP_COLORS,
+        elevationRange,
+        elevationScale: 5,
+        extruded: true,
+        getPosition: d => d.position,
+        lightSettings: LIGHT_SETTINGS,
+        opacity: 0.8,
+        pickable: true,
+        data,
+        onHover,
+        ...settings
+      })
   ];
 }
