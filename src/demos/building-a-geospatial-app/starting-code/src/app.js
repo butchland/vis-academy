@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StaticMap } from 'react-map-gl';
+import { StaticMap, NavigationControl } from 'react-map-gl';
 import {
   LayerControls,
   MapStylePicker,
@@ -163,7 +163,16 @@ export default class App extends Component {
           <StaticMap
             mapStyle={this.state.style}
             mapboxApiAccessToken={MAPBOX_TOKEN}
-          />
+          >
+            <div className='mapboxgl-ctrl-bottom-right'>
+              <NavigationControl 
+                onViewportChange={viewport => this.setState({viewport})}
+                visualizePitch={true}
+                showCompass={true}
+                showZoom={true}
+              />
+            </div>
+          </StaticMap>
         </DeckGL>
       </div>
     );
