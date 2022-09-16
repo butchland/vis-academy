@@ -36,6 +36,7 @@ export default class App extends Component {
       hoveredObject: null
     },
     points: [],
+    taxi_trips: [],
     settings: Object.keys(HEXAGON_CONTROLS).reduce(
       (accu, key) => ({
         ...accu,
@@ -60,6 +61,15 @@ export default class App extends Component {
   };
 
   _processData() {
+    const taxi_trips = taxiData.map(curr => {
+      const taxi_trip = {
+        pickup_location: [Number(curr.pickup_longitude),Number(curr.pickup_latitude)],
+        dropoff_location: [Number(curr.dropoff_longitude), Number(curr.dropoff_latitude)],
+        ...curr
+      }
+      return taxi_trip;
+    });
+
     const points = taxiData.reduce((accu, curr, i) => {
      
       accu.push({
@@ -90,7 +100,8 @@ export default class App extends Component {
       return accu;
     }, []);
     this.setState({
-      points
+      points,
+      taxi_trips
     });
   }
 
