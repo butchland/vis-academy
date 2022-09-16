@@ -3,7 +3,7 @@ import { StaticMap } from 'react-map-gl';
 import {
   LayerControls,
   MapStylePicker,
-  SCATTERPLOT_CONTROLS
+  HEXAGON_CONTROLS
 } from './controls';
 import DeckGL from 'deck.gl';
 import taxiData from '../../../data/taxi';
@@ -31,10 +31,10 @@ export default class App extends Component {
       hoveredObject: null
     },
     points: [],
-    settings: Object.keys(SCATTERPLOT_CONTROLS).reduce(
+    settings: Object.keys(HEXAGON_CONTROLS).reduce(
       (accu, key) => ({
         ...accu,
-        [key]: SCATTERPLOT_CONTROLS[key].value
+        [key]: HEXAGON_CONTROLS[key].value
       }),
       {}
     ),
@@ -134,7 +134,7 @@ export default class App extends Component {
           />
           <LayerControls
             settings={this.state.settings}
-            propTypes={SCATTERPLOT_CONTROLS}
+            propTypes={HEXAGON_CONTROLS}
             onChange={settings => this._updateLayerSettings(settings)}
           />
           <StaticMap
