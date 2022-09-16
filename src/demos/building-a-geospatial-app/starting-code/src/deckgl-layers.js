@@ -26,7 +26,7 @@ const LIGHT_SETTINGS = {
 const elevationRange = [0, 1000];
 
 export function renderLayers(props) {
-  const { data, onHover, settings } = props;
+  const { data, onHover, onHexHover, settings } = props;
   return [
     settings.showScatterplot && new ScatterplotLayer({
       points: [],
@@ -55,6 +55,7 @@ export function renderLayers(props) {
         opacity: 0.4,
         pickable: true,
         data,
+        onHover:onHexHover,
         ...settings
       })
   ];

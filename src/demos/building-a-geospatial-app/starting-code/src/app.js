@@ -30,6 +30,11 @@ export default class App extends Component {
       y: 0,
       hoveredObject: null
     },
+    hexhover: {
+      x: 0,
+      y: 0,
+      hoveredObject: null
+    },
     points: [],
     settings: Object.keys(HEXAGON_CONTROLS).reduce(
       (accu, key) => ({
@@ -98,12 +103,17 @@ export default class App extends Component {
 
     this.setState({ hover: { x, y, hoveredObject: object, label } });
   }
+  _onHexHover({ x, y, object }) {
+    const points = object.points;
+    const trips = points.length;
+    this.setState({ hexhover: { x, y, hoveredObject: object, trips} });
+  }
   render() {
     const data = this.state.points;
     if (!data.length) {
       return null;
     }
-    const { hover, settings } = this.state;
+    const { hover, hexhover } = this.state;
     return (
       <div>
         {hover.hoveredObject && (
@@ -119,10 +129,21 @@ export default class App extends Component {
             <div>tip: {hover.hoveredObject.tip_amount} tot: {hover.hoveredObject.total_amount} </div>
           </div>
         )}
+        {hexhover.hoveredObject && (
+          <div
+            style={{
+              ...tooltipStyle,
+              transform: `translate(${hexhover.x}px, ${hexhover.y}px)`
+            }}
+          >            
+          <div>total trips {hexhover.trips}</div>
+          </div>
+        )}
         <DeckGL
           layers={renderLayers({
             data: this.state.points,
             onHover: hover => this._onHover(hover),
+            onHexHover: hover => this._onHexHover(hover),
             settings: this.state.settings
           })}
           initialViewState={INITIAL_VIEW_STATE}
