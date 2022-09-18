@@ -99,6 +99,7 @@ export default class App extends Component {
       });
       return accu;
     }, []);
+    
     this.setState({
       points,
       taxi_trips
@@ -155,6 +156,7 @@ export default class App extends Component {
         <DeckGL
           layers={renderLayers({
             data: this.state.points,
+            trip_data: this.state.taxi_trips,
             onHover: hover => this._onHover(hover),
             onHexHover: hover => this._onHexHover(hover),
             settings: this.state.settings

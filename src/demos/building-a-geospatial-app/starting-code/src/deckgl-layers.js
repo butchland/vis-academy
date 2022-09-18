@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScatterplotLayer, HexagonLayer } from 'deck.gl';
+import { ScatterplotLayer, HexagonLayer, ArcLayer } from 'deck.gl';
 
 const PICKUP_COLOR = [114, 19, 108];
 const DROPOFF_COLOR = [243, 185, 72];
@@ -26,8 +26,19 @@ const LIGHT_SETTINGS = {
 const elevationRange = [0, 1000];
 
 export function renderLayers(props) {
-  const { data, onHover, onHexHover, settings } = props;
+  const { data, trip_data, onHover, onHexHover, settings } = props;
   return [
+    settings.showArcLayer && new ArcLayer({
+      id: 'arc-layer',
+      data: trip_data,
+      pickable: true,
+      getWidth: 12,
+      opacity: 0.2,
+      getSourcePosition: d => d.pickup_location,
+      getTargetPosition: d => d.dropoff_location,
+      getSourceColor: d => [255, 140, 0],
+      getTargetColor: d => [0, 140, 90]
+    }),
     settings.showScatterplot && new ScatterplotLayer({
       points: [],
       id: 'scatterplot',

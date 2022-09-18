@@ -44,7 +44,14 @@ export const HEXAGON_CONTROLS = {
     step: 10,
     min: 10,
     max: 200
-  }
+  },
+
+  showArcLayer: {
+    displayName: 'Show Trips',
+    type: 'boolean',
+    value: true
+  },
+
 };
 
 export const SCATTERPLOT_CONTROLS = {
