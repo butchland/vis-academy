@@ -7,6 +7,7 @@ export const HEXAGON_CONTROLS = {
     type: 'boolean',
     value: true
   },
+
   radius: {
     displayName: 'Hexagon Radius',
     type: 'range',
@@ -15,6 +16,7 @@ export const HEXAGON_CONTROLS = {
     min: 50,
     max: 1000
   },
+
   coverage: {
     displayName: 'Hexagon Coverage',
     type: 'range',
@@ -29,6 +31,14 @@ export const HEXAGON_CONTROLS = {
     value: 100,
     step: 0.1,
     min: 80,
+    max: 100
+  },
+  lowerPercentile: {
+    displayName: 'Hexagon Lower Percentile',
+    type: 'range',
+    value: 0,
+    step: 0.1,
+    min: 0,
     max: 100
   },
 
