@@ -27,6 +27,7 @@ const elevationRange = [0, 1000];
 
 export function renderLayers(props) {
   const { data, trip_data, onHover, onHexHover, settings } = props;
+
   return [
     settings.showArcLayer && new ArcLayer({
       id: 'arc-layer',

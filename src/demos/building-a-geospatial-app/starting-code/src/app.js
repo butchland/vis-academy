@@ -65,7 +65,7 @@ export default class App extends Component {
       const taxi_trip = {
         pickup_location: [Number(curr.pickup_longitude),Number(curr.pickup_latitude)],
         dropoff_location: [Number(curr.dropoff_longitude), Number(curr.dropoff_latitude)],
-        ...curr
+        trip_distance: Number(curr.trip_distance)
       }
       return taxi_trip;
     });
@@ -105,7 +105,6 @@ export default class App extends Component {
       taxi_trips
     });
   }
-
   _updateLayerSettings(settings) {
     this.setState({ settings });
   }
@@ -127,6 +126,10 @@ export default class App extends Component {
     if (!data.length) {
       return null;
     }
+    const distanceUpperPercentile  = this.state.settings.distanceUpperPercentile;
+    console.log('upper percentile %d', distanceUpperPercentile);
+    const max_distance = 30 * distanceUpperPercentile/100;
+    const taxi_trips = this.state.taxi_trips.filter(d => d.trip_distance > max_distance);
     const { hover, hexhover } = this.state;
     return (
       <div>
@@ -156,7 +159,7 @@ export default class App extends Component {
         <DeckGL
           layers={renderLayers({
             data: this.state.points,
-            trip_data: this.state.taxi_trips,
+            trip_data: taxi_trips,
             onHover: hover => this._onHover(hover),
             onHexHover: hover => this._onHexHover(hover),
             settings: this.state.settings
