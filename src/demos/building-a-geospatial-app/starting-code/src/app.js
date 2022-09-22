@@ -28,9 +28,17 @@ export default class App extends Component {
     hover: {
       x: 0,
       y: 0,
-      hoveredObject: null
+      hoveredObject: null,
+      label: ''
     },
     hexhover: {
+      x: 0,
+      y: 0,
+      hoveredObject: null,
+      trips: 0,
+      points: [],
+    },
+    archover: {
       x: 0,
       y: 0,
       hoveredObject: null
@@ -62,8 +70,9 @@ export default class App extends Component {
   };
 
   _processData() {
-    const taxi_trips = taxiData.map(curr => {
+    const taxi_trips = taxiData.map((curr,i) => {
       const taxi_trip = {
+        trip_id: i,
         pickup_location: [Number(curr.pickup_longitude),Number(curr.pickup_latitude)],
         dropoff_location: [Number(curr.dropoff_longitude), Number(curr.dropoff_latitude)],
         ...curr
@@ -122,9 +131,15 @@ export default class App extends Component {
     if (object) {
       const points = object.points;
       const trips = points.length;
-      this.setState({ hexhover: { x, y, hoveredObject: object, trips} });
+      this.setState({ hexhover: { x, y, hoveredObject: object, trips, points} });
     }
   }
+  _onArcHover({ x, y, object }) {
+    if (object) {      
+      this.setState({ archover: { x, y, hoveredObject: object} });
+    }
+  }
+
   render() {
     const distanceUpperPercentile  = this.state.settings.distanceUpperPercentile;
     const distanceLowerPercentile  = this.state.settings.distanceLowerPercentile;
@@ -138,7 +153,7 @@ export default class App extends Component {
     //   return null;
     // }
 
-    const { hover, hexhover } = this.state;
+    const { hover, hexhover, archover } = this.state;
     return (
       <div>
         {hover.hoveredObject && (
@@ -161,15 +176,27 @@ export default class App extends Component {
               transform: `translate(${hexhover.x}px, ${hexhover.y}px)`
             }}
           >            
-          <div>total trips {hexhover.trips}</div>
+            <div>total trips {hexhover.trips}</div>
           </div>
         )}
+        {archover.hoveredObject && (
+          <div
+            style={{
+              ...tooltipStyle,
+              transform: `translate(${archover.x}px, ${archover.y}px)`
+            }}
+          >            
+            <div>trip distance {archover.hoveredObject.trip_distance}</div>
+          </div>
+        )}
+
         <DeckGL
           layers={renderLayers({
             data,
             trip_data: taxi_trips,
             onHover: hover => this._onHover(hover),
             onHexHover: hover => this._onHexHover(hover),
+            onArcHover: hover => this._onArcHover(hover),
             settings: this.state.settings
           })}
           initialViewState={INITIAL_VIEW_STATE}

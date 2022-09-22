@@ -26,7 +26,7 @@ const LIGHT_SETTINGS = {
 const elevationRange = [0, 1000];
 
 export function renderLayers(props) {
-  const { data, trip_data, onHover, onHexHover, settings } = props;
+  const { data, trip_data, onHover, onHexHover, onArcHover, settings } = props;
 
   return [
     settings.showArcLayer && new ArcLayer({
@@ -38,7 +38,8 @@ export function renderLayers(props) {
       getSourcePosition: d => d.pickup_location,
       getTargetPosition: d => d.dropoff_location,
       getSourceColor: d => [255, 140, 0],
-      getTargetColor: d => [0, 140, 90]
+      getTargetColor: d => [0, 140, 90],
+      onHover: onArcHover
     }),
     settings.showScatterplot && new ScatterplotLayer({
       points: [],
