@@ -55,6 +55,12 @@ export const HEXAGON_CONTROLS = {
     min: 10,
     max: 200
   },
+  
+  limitScatterplot: {
+    displayName: 'Limit Scatterplot',
+    type: 'boolean',
+    value: false
+  },
 
   showArcLayer: {
     displayName: 'Show Trips',

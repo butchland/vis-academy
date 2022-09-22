@@ -126,16 +126,18 @@ export default class App extends Component {
     }
   }
   render() {
-    const data = this.state.points;
-    if (!data.length) {
-      return null;
-    }
     const distanceUpperPercentile  = this.state.settings.distanceUpperPercentile;
     const distanceLowerPercentile  = this.state.settings.distanceLowerPercentile;
     const max_distance = this.state.max_distance;
     const upper_distance_threshold = max_distance * distanceUpperPercentile/100;
     const lower_distance_threshold = max_distance * distanceLowerPercentile/100;
     const taxi_trips = this.state.taxi_trips.filter(d => d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold);
+    const limitScatterplot = this.state.settings.limitScatterplot;
+    const data = this.state.points.filter(d => !limitScatterplot ||(d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold));
+    // if (!data.length) {
+    //   return null;
+    // }
+
     const { hover, hexhover } = this.state;
     return (
       <div>
@@ -164,7 +166,7 @@ export default class App extends Component {
         )}
         <DeckGL
           layers={renderLayers({
-            data: this.state.points,
+            data,
             trip_data: taxi_trips,
             onHover: hover => this._onHover(hover),
             onHexHover: hover => this._onHexHover(hover),
