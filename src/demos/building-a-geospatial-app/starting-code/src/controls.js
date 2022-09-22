@@ -65,6 +65,14 @@ export const HEXAGON_CONTROLS = {
   distanceUpperPercentile: {
     displayName: 'Distance UpperPercentile',
     type: 'range',
+    value: 0,
+    step: 0.1,
+    min: 0,
+    max: 100
+  },
+  distanceLowerPercentile: {
+    displayName: 'Distance LowerPercentile',
+    type: 'range',
     value: 100,
     step: 0.1,
     min: 0,

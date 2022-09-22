@@ -131,9 +131,11 @@ export default class App extends Component {
       return null;
     }
     const distanceUpperPercentile  = this.state.settings.distanceUpperPercentile;
+    const distanceLowerPercentile  = this.state.settings.distanceLowerPercentile;
     const max_distance = this.state.max_distance;
-    const distance_threshold = max_distance * distanceUpperPercentile/100;
-    const taxi_trips = this.state.taxi_trips.filter(d => d.trip_distance > distance_threshold);
+    const upper_distance_threshold = max_distance * distanceUpperPercentile/100;
+    const lower_distance_threshold = max_distance * distanceLowerPercentile/100;
+    const taxi_trips = this.state.taxi_trips.filter(d => d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold);
     const { hover, hexhover } = this.state;
     return (
       <div>
