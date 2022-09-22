@@ -37,6 +37,7 @@ export default class App extends Component {
     },
     points: [],
     taxi_trips: [],
+    max_distance: 0,
     settings: Object.keys(HEXAGON_CONTROLS).reduce(
       (accu, key) => ({
         ...accu,
@@ -65,10 +66,11 @@ export default class App extends Component {
       const taxi_trip = {
         pickup_location: [Number(curr.pickup_longitude),Number(curr.pickup_latitude)],
         dropoff_location: [Number(curr.dropoff_longitude), Number(curr.dropoff_latitude)],
-        trip_distance: Number(curr.trip_distance)
+        ...curr
       }
       return taxi_trip;
     });
+    const max_distance = Math.max(...taxi_trips.map(d => d.trip_distance));
 
     const points = taxiData.reduce((accu, curr, i) => {
      
@@ -102,9 +104,11 @@ export default class App extends Component {
     
     this.setState({
       points,
-      taxi_trips
+      taxi_trips,
+      max_distance
     });
   }
+
   _updateLayerSettings(settings) {
     this.setState({ settings });
   }
@@ -127,9 +131,9 @@ export default class App extends Component {
       return null;
     }
     const distanceUpperPercentile  = this.state.settings.distanceUpperPercentile;
-    console.log('upper percentile %d', distanceUpperPercentile);
-    const max_distance = 30 * distanceUpperPercentile/100;
-    const taxi_trips = this.state.taxi_trips.filter(d => d.trip_distance > max_distance);
+    const max_distance = this.state.max_distance;
+    const distance_threshold = max_distance * distanceUpperPercentile/100;
+    const taxi_trips = this.state.taxi_trips.filter(d => d.trip_distance > distance_threshold);
     const { hover, hexhover } = this.state;
     return (
       <div>
