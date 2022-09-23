@@ -55,6 +55,17 @@ export const HEXAGON_CONTROLS = {
     min: 10,
     max: 200
   },
+  showPickups: {
+    displayName: 'Show Pickups',
+    type: 'boolean',
+    value: true
+  },
+  showDropoffs: {
+    displayName: 'Show Dropoffs',
+    type: 'boolean',
+    value: true
+  },
+
   
   limitScatterplot: {
     displayName: 'Limit Scatterplot',

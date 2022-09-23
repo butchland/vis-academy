@@ -164,9 +164,13 @@ export default class App extends Component {
            (!limitTime || (d.pickup_time > upper_time_threshold && d.pickup_time < lower_time_threshold))
     );
     const limitScatterplot = this.state.settings.limitScatterplot;
-    const data = this.state.points.filter(d => !limitScatterplot ||(
+    const showPickups = this.state.settings.showPickups;
+    const showDropoffs = this.state.settings.showDropoffs;
+
+    const data = this.state.points.filter(d => (!limitScatterplot ||(
       (d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold)) && 
-      (d.event_time > upper_time_threshold && d.event_time < lower_time_threshold));
+      (d.event_time > upper_time_threshold && d.event_time < lower_time_threshold)) && 
+      ((showPickups && d.pickup) || (showDropoffs && !d.pickup)));
     // if (!data.length) {
     //   return null;
     // }
@@ -183,7 +187,7 @@ export default class App extends Component {
           >
             <div>{hover.label} {hover.hoveredObject.trip_id} </div>
             <div>{hover.hoveredObject.event_datetime} pass: {hover.hoveredObject.passenger_count} </div>
-            <div>dist: {hover.hoveredObject.trip_id} fare: {hover.hoveredObject.fare_amount}</div>
+            <div>dist: {hover.hoveredObject.trip_distance} fare: {hover.hoveredObject.fare_amount}</div>
             <div>tip: {hover.hoveredObject.tip_amount} tot: {hover.hoveredObject.total_amount} </div>
           </div>
         )}
