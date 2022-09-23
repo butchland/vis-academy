@@ -46,6 +46,8 @@ export default class App extends Component {
       hoveredObject: null
     },
     points: [],
+    pickups: {},
+    dropoffs: {},
     taxi_trips: [],
     max_distance: 0,
     settings: Object.keys(HEXAGON_CONTROLS).reduce(
@@ -86,9 +88,11 @@ export default class App extends Component {
     });
     const max_distance = Math.max(...taxi_trips.map(d => d.trip_distance));
 
-    const points = taxiData.reduce((accu, curr, i) => {
+    const data = taxiData.reduce((accu, curr, i) => {
+      const pickupHour = new Date(curr.pickup_datetime).getUTCHours();
+      const dropoffHour = new Date(curr.dropoff_datetime).getUTCHours();
      
-      accu.push({
+      accu.points.push({
         position: [Number(curr.pickup_longitude), Number(curr.pickup_latitude)],
         trip_id: i,
         event_datetime: curr.pickup_datetime,
@@ -98,9 +102,10 @@ export default class App extends Component {
         fare_amount: curr.fare_amount,
         tip_amount: curr.tip_amount,
         total_amount: curr.total_amount,
+        hour: pickupHour,
         pickup: true
       });
-      accu.push({
+      accu.points.push({
         position: [
           Number(curr.dropoff_longitude),
           Number(curr.dropoff_latitude)
@@ -113,13 +118,25 @@ export default class App extends Component {
         fare_amount: curr.fare_amount,
         tip_amount: curr.tip_amount,
         total_amount: curr.total_amount,
+        hour: dropoffHour,
         pickup: false
       });
+      const prevPickups = accu.pickupObj[pickupHour] || 0;
+      const prevDropoffs = accu.dropoffObj[dropoffHour] || 0;
+      accu.pickupObj[pickupHour] = prevPickups + 1;
+      accu.dropoffObj[dropoffHour] = prevDropoffs + 1;
+
       return accu;
-    }, []);
+    },{ 
+        points:[],
+        pickupObj: {},
+        dropoffObj: {}
+      });
     
     this.setState({
-      points,
+      points: data.points,
+      pickups: data.pickupObj,
+      dropoffs: data.dropoffObj,
       taxi_trips,
       max_distance
     });
