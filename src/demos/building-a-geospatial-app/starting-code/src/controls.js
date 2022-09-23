@@ -85,6 +85,30 @@ export const HEXAGON_CONTROLS = {
     max: 100
   },
 
+  limitTime: {
+    displayName: 'Filter Time of Day',
+    type: 'boolean',
+    value: false
+  },
+
+
+  timeUpperPercentile: {
+    displayName: 'Time of Day UpperPercentile',
+    type: 'range',
+    value: 0,
+    step: 0.1,
+    min: 0,
+    max: 100
+  },
+  timeLowerPercentile: {
+    displayName: 'Time of Day LowerPercentile',
+    type: 'range',
+    value: 100,
+    step: 0.1,
+    min: 0,
+    max: 100
+  },
+
 };
 
 export const SCATTERPLOT_CONTROLS = {

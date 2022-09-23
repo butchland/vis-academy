@@ -12,6 +12,8 @@ import { tooltipStyle } from './style';
 
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v9';
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+const MSECS_PER_DAY = 1000 * 60 * 60 * 24;
+const TZ_ADJUST = (new Date()).getTimezoneOffset() * 60 * 1000;
 
 const INITIAL_VIEW_STATE = {
   longitude: -74,
@@ -70,11 +72,14 @@ export default class App extends Component {
   };
 
   _processData() {
+    
     const taxi_trips = taxiData.map((curr,i) => {
       const taxi_trip = {
         trip_id: i,
         pickup_location: [Number(curr.pickup_longitude),Number(curr.pickup_latitude)],
         dropoff_location: [Number(curr.dropoff_longitude), Number(curr.dropoff_latitude)],
+        pickup_time: (new Date(curr.pickup_datetime)).getTime()  % MSECS_PER_DAY,
+        dropoff_time: (new Date(curr.dropoff_datetime)).getTime()  % MSECS_PER_DAY,
         ...curr
       }
       return taxi_trip;
@@ -87,6 +92,7 @@ export default class App extends Component {
         position: [Number(curr.pickup_longitude), Number(curr.pickup_latitude)],
         trip_id: i,
         event_datetime: curr.pickup_datetime,
+        event_time: (new Date(curr.pickup_datetime)).getTime()  % MSECS_PER_DAY,
         passenger_count: curr.passenger_count,
         trip_distance: curr.trip_distance,
         fare_amount: curr.fare_amount,
@@ -101,6 +107,7 @@ export default class App extends Component {
         ],
         trip_id: i,
         event_datetime: curr.dropoff_datetime,
+        event_time: (new Date(curr.pickup_datetime)).getTime()  % MSECS_PER_DAY,
         passenger_count: curr.passenger_count,
         trip_distance: curr.trip_distance,
         fare_amount: curr.fare_amount,
@@ -146,9 +153,20 @@ export default class App extends Component {
     const max_distance = this.state.max_distance;
     const upper_distance_threshold = max_distance * distanceUpperPercentile/100;
     const lower_distance_threshold = max_distance * distanceLowerPercentile/100;
-    const taxi_trips = this.state.taxi_trips.filter(d => d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold);
+    const timeUpperPercentile = this.state.settings.timeUpperPercentile;
+    const timeLowerPercentile = this.state.settings.timeLowerPercentile;
+    const upper_time_threshold = MSECS_PER_DAY * timeUpperPercentile/100;
+    const lower_time_threshold = MSECS_PER_DAY * timeLowerPercentile/100;
+    const limitTime = this.state.settings.limitTime;
+
+    const taxi_trips = this.state.taxi_trips.filter(
+      d => (d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold) &&
+           (!limitTime || (d.pickup_time > upper_time_threshold && d.pickup_time < lower_time_threshold))
+    );
     const limitScatterplot = this.state.settings.limitScatterplot;
-    const data = this.state.points.filter(d => !limitScatterplot ||(d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold));
+    const data = this.state.points.filter(d => !limitScatterplot ||(
+      (d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold)) && 
+      (d.event_time > upper_time_threshold && d.event_time < lower_time_threshold));
     // if (!data.length) {
     //   return null;
     // }
@@ -187,6 +205,7 @@ export default class App extends Component {
             }}
           >            
             <div>trip distance {archover.hoveredObject.trip_distance}</div>
+            <div>time: {(new Date(archover.hoveredObject.pickup_time + TZ_ADJUST)).toLocaleTimeString()}</div>
           </div>
         )}
 
