@@ -9,6 +9,7 @@ import DeckGL from 'deck.gl';
 import taxiData from '../../../data/taxi';
 import { renderLayers } from './deckgl-layers';
 import { tooltipStyle } from './style';
+import Charts from './charts';
 
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v9';
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
@@ -229,8 +230,19 @@ export default class App extends Component {
             <div>time: {(new Date(archover.hoveredObject.pickup_time + TZ_ADJUST)).toLocaleTimeString()}</div>
           </div>
         )}
+        <MapStylePicker
+          onStyleChange={this.onStyleChange}
+          currentStyle={this.state.style}
+        />
+        <LayerControls
+          settings={this.state.settings}
+          propTypes={HEXAGON_CONTROLS}
+          onChange={settings => this._updateLayerSettings(settings)}
+        />
 
         <DeckGL
+          {... this.state.settings}
+          onWebGLInitialize={this._onWebGLInitialize}
           layers={renderLayers({
             data,
             trip_data: taxi_trips,
@@ -242,15 +254,6 @@ export default class App extends Component {
           initialViewState={INITIAL_VIEW_STATE}
           controller
         >
-          <MapStylePicker
-            onStyleChange={this.onStyleChange}
-            currentStyle={this.state.style}
-          />
-          <LayerControls
-            settings={this.state.settings}
-            propTypes={HEXAGON_CONTROLS}
-            onChange={settings => this._updateLayerSettings(settings)}
-          />
           <StaticMap
             mapStyle={this.state.style}
             mapboxApiAccessToken={MAPBOX_TOKEN}
@@ -265,6 +268,7 @@ export default class App extends Component {
             </div>
           </StaticMap>
         </DeckGL>
+        <Charts {...this.state} />
       </div>
     );
   }
