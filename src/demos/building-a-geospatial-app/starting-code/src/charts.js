@@ -15,7 +15,7 @@ export default function Charts({ pickups }) {
       <p>As percentage of all trips</p>
       <XYPlot height={140} width={480}>
         <XAxis />
-        <YAxis />
+        <YAxis tickFormat={d => (d / 100).toFixed(0) + '%'} />
         <VerticalBarSeries data={pickups} />
       </XYPlot>
     </div>
