@@ -47,8 +47,8 @@ export default class App extends Component {
       hoveredObject: null
     },
     points: [],
-    pickups: {},
-    dropoffs: {},
+    pickups: [],
+    dropoffs: [],
     taxi_trips: [],
     max_distance: 0,
     settings: Object.keys(HEXAGON_CONTROLS).reduce(
@@ -133,11 +133,19 @@ export default class App extends Component {
         pickupObj: {},
         dropoffObj: {}
       });
+
+    data.pickups = Object.entries(data.pickupObj).map(([hour, count]) => {
+      return { hour: Number(hour), x: Number(hour) + 0.5, y: count };
+    });
+    data.dropoffs = Object.entries(data.dropoffObj).map(([hour, count]) => {
+      return { hour: Number(hour), x: Number(hour) + 0.5, y: count };
+    });
+  
     
     this.setState({
       points: data.points,
-      pickups: data.pickupObj,
-      dropoffs: data.dropoffObj,
+      pickups: data.pickups,
+      dropoffs: data.dropoffs,
       taxi_trips,
       max_distance
     });
@@ -268,7 +276,7 @@ export default class App extends Component {
             </div>
           </StaticMap>
         </DeckGL>
-        <Charts {...this.state} />
+        <Charts  pickups={this.state.pickups} />
       </div>
     );
   }

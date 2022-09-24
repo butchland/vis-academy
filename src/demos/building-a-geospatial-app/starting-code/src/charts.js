@@ -4,10 +4,11 @@ import { charts } from "./style";
 import { VerticalBarSeries, XAxis, XYPlot, YAxis } from "react-vis";
 
 export default function Charts({ pickups }) {
-  const keys = Object.keys(pickups);
-  const data = keys.forEach(key => {
-    return pickups[key];
-  })
+
+  if (!pickups) {
+    return <div style={charts} />;
+  }
+
   return (
     <div style={charts}>
       <h2>Pickups by hour</h2>
@@ -15,7 +16,7 @@ export default function Charts({ pickups }) {
       <XYPlot height={140} width={480}>
         <XAxis />
         <YAxis />
-        <VerticalBarSeries data={data} />
+        <VerticalBarSeries data={pickups} />
       </XYPlot>
     </div>
   );
