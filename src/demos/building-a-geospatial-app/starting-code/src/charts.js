@@ -22,7 +22,12 @@ export default function Charts({
     <div style={charts}>
       <h2>Pickups by hour</h2>
       <p>As percentage of all trips ({total_trips})</p>
-      <XYPlot height={140} width={480} yDomain={[0,total_trips/10]}>
+      <XYPlot 
+        height={140} 
+        width={480} 
+        yDomain={[0,total_trips/10]}
+        onMouseLeave={() => highlight(null)}
+      >
         <XAxis />
         <YAxis tickFormat={d => (d / 100).toFixed(0) + '%'} />
         <VerticalBarSeries 
