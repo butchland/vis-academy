@@ -6,6 +6,8 @@ import { VerticalBarSeries, XAxis, XYPlot, YAxis } from "react-vis";
 export default function Charts({ 
   highlight,
   highlightedHour,
+  select,
+  selectedHour,
   pickups, 
   taxi_trips
  }) {
@@ -14,9 +16,16 @@ export default function Charts({
     return <div style={charts} />;
   }
   const total_trips = taxi_trips.length;
-  const data = pickups.map(d => ({
-    ...d, color: d.hour === highlightedHour ? '#19CDD7' :'#125C77'
-  }));
+  const data = pickups.map(d => {
+    let color = '#125C77';
+    if (d.hour === selectedHour) {
+      color =  '#19CDD7';
+    }
+    if (d.hour === highlightedHour) {
+      color =  '#17B8BE';
+    } 
+    return { ...d, color }
+  });
 
   return (
     <div style={charts}>
@@ -34,6 +43,8 @@ export default function Charts({
           colorType="literal"
           data={data} 
           onValueMouseOver={d => highlight(d.hour)}
+          onValueClick={d => select(d.hour)}
+          style={{cursor: 'pointer'}}
         />
       </XYPlot>
     </div>

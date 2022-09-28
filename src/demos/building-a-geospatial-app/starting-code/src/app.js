@@ -47,6 +47,7 @@ export default class App extends Component {
       hoveredObject: null
     },
     highlightedHour: null,
+    selectedHour: null,
     points: [],
     pickups: [],
     dropoffs: [],
@@ -176,6 +177,11 @@ export default class App extends Component {
   _onHighlight(highlightedHour) {
     this.setState({highlightedHour});
   }
+  _onSelect(selectedHour) {
+    this.setState({
+      selectedHour: selectedHour === this.state.selectedHour ? null : selectedHour
+    });
+  }
   render() {
     const distanceUpperPercentile  = this.state.settings.distanceUpperPercentile;
     const distanceLowerPercentile  = this.state.settings.distanceLowerPercentile;
@@ -281,6 +287,7 @@ export default class App extends Component {
         </DeckGL>
         <Charts  {...this.state}
                  highlight={ hour => this._onHighlight(hour) }  
+                 select={ hour => this._onSelect(hour)}
         />
       </div>
     );
