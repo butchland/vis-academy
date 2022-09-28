@@ -276,7 +276,7 @@ export default class App extends Component {
             </div>
           </StaticMap>
         </DeckGL>
-        <Charts  pickups={this.state.pickups} />
+        <Charts  {...this.state}  />
       </div>
     );
   }
