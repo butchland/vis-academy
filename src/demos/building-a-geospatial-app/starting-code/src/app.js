@@ -79,12 +79,16 @@ export default class App extends Component {
   _processData() {
     
     const taxi_trips = taxiData.map((curr,i) => {
+      const pickupHour = new Date(curr.pickup_datetime).getUTCHours();
+
+
       const taxi_trip = {
         trip_id: i,
         pickup_location: [Number(curr.pickup_longitude),Number(curr.pickup_latitude)],
         dropoff_location: [Number(curr.dropoff_longitude), Number(curr.dropoff_latitude)],
         pickup_time: (new Date(curr.pickup_datetime)).getTime()  % MSECS_PER_DAY,
         dropoff_time: (new Date(curr.dropoff_datetime)).getTime()  % MSECS_PER_DAY,
+        hour: pickupHour,
         ...curr
       }
       return taxi_trip;
@@ -192,11 +196,13 @@ export default class App extends Component {
     const timeLowerPercentile = this.state.settings.timeLowerPercentile;
     const upper_time_threshold = MSECS_PER_DAY * timeUpperPercentile/100;
     const lower_time_threshold = MSECS_PER_DAY * timeLowerPercentile/100;
+    const  hour = this.state.highlightedHour || this.state.selectedHour;
     const limitTime = this.state.settings.limitTime;
-
+    //const filteredData = hour === null ? data : data.filter(d => d.hour === hour);
     const taxi_trips = this.state.taxi_trips.filter(
       d => (d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold) &&
-           (!limitTime || (d.pickup_time > upper_time_threshold && d.pickup_time < lower_time_threshold))
+           (!limitTime || (d.pickup_time > upper_time_threshold && d.pickup_time < lower_time_threshold)) &&
+           (hour === null || d.hour === hour)
     );
     const limitScatterplot = this.state.settings.limitScatterplot;
     const showPickups = this.state.settings.showPickups;
@@ -205,7 +211,7 @@ export default class App extends Component {
     const data = this.state.points.filter(d => (!limitScatterplot ||(
       (d.trip_distance > upper_distance_threshold && d.trip_distance < lower_distance_threshold)) && 
       (d.event_time > upper_time_threshold && d.event_time < lower_time_threshold)) && 
-      ((showPickups && d.pickup) || (showDropoffs && !d.pickup)));
+      ((showPickups && d.pickup) || (showDropoffs && !d.pickup)) && (hour === null || d.hour === hour));
     // if (!data.length) {
     //   return null;
     // }
